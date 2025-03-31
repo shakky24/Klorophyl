@@ -81,7 +81,7 @@ export default function Hero() {
               <span className="block text-accent font-light animate-reveal delay-150">Nature</span>
             </h1>
             <div className="w-20 h-[1px] bg-accent mb-10 animate-slide-in-right"></div>
-            <p className="text-lg md:text-xl text-white/90 mb-14 max-w-xl mx-auto font-light leading-relaxed animate-fade-in-up">
+            <p className="text-lg md:text-xl text-white/90 mb-14 max-w-xl mx-auto font-light leading-relaxed animate-fade-in-up ">
               We craft bespoke garden spaces that transform ordinary spaces into extraordinary sanctuaries, where natural beauty meets refined design.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">

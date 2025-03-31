@@ -16,7 +16,7 @@ export default function Footer() {
                 height={50} 
                 className="rounded-md"
               />
-              <span className="font-bold text-2xl">Klorophyl</span>
+              <span className="font-playfair font-bold text-2xl">Klorophyl</span>
             </div>
             <p className="text-green-100 mb-6">
               Crafting breathtaking green spaces for every home & business since 2013.

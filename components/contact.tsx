@@ -15,6 +15,7 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const sectionRef = useRef<HTMLElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
   
@@ -94,18 +95,35 @@ export default function Contact() {
     setCurrentStep(currentStep - 1)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setSubmitError(null)
 
-    // Here you would typically send the form data to your backend
-    console.log("Form submitted with data:", formData)
+    try {
+      // Send the form data to your backend API route
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setIsSubmitted(true)
-    }, 1500)
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to submit form');
+      }
+
+      console.log("Form submitted successfully:", result);
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      setSubmitError(error instanceof Error ? error.message : 'An unexpected error occurred');
+      setIsSubmitting(false);
+    }
   }
 
   const renderStepIndicator = () => {
@@ -527,7 +545,7 @@ export default function Contact() {
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
             {isSubmitted ? (
-              <div className="p-8 text-center">
+              <div className="p-8 text-center bg-white">
                 <div className="flex justify-center mb-4">
                   <CheckCircle2 className="h-16 w-16 text-green-600" />
                 </div>
@@ -555,17 +573,20 @@ export default function Contact() {
                     designPreferences: ""
                   })
                 }} className="bg-green-600 hover:bg-green-700">
-                  Submit Another Request
+                  Make Another Request
                 </Button>
               </div>
             ) : (
-              <form
-                ref={formRef}
-                onSubmit={handleSubmit}
-                className="p-6 md:p-8 opacity-0 transition-all duration-1000 delay-300"
-              >
+              <form ref={formRef} onSubmit={handleSubmit} className="p-8 bg-white">
                 {renderStepIndicator()}
                 {renderStepContent()}
+                
+                {submitError && (
+                  <div className="mt-4 p-3 bg-red-50 text-red-700 rounded-md">
+                    <p className="text-sm">{submitError}</p>
+                    <p className="text-xs mt-1">Please try again or contact us directly.</p>
+                  </div>
+                )}
               </form>
             )}
           </div>
