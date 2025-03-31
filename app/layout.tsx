@@ -1,17 +1,24 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Outfit } from "next/font/google"
-// Using Outfit as the primary font
+import { Playfair_Display, Cormorant } from "next/font/google"
+// Using Playfair Display as primary font with Cormorant as the secondary font
 import "./globals.css"
 import Header from "@/components/header"
 import { ThemeProvider } from "@/components/theme-provider"
 import ScrollToTop from "@/components/scroll-to-top"
 
-// Initialize the Outfit font
-const outfit = Outfit({
+// Initialize the Playfair Display font
+const playfair = Playfair_Display({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-outfit",
+  variable: "--font-playfair",
+})
+
+// Initialize Cormorant as a secondary font for body text
+const cormorant = Cormorant({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-cormorant",
 })
 
 export const metadata: Metadata = {
@@ -28,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`scroll-smooth ${outfit.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`scroll-smooth ${playfair.variable} ${cormorant.variable}`} suppressHydrationWarning>
       <head>
         {/* Google Analytics script can be added here later */}
         {/* 
@@ -48,15 +55,17 @@ export default function RootLayout({
         />
         */}
       </head>
-      <body className="font-outfit">
-        <ThemeProvider 
-          attribute="class" 
+      <body className={`font-outfit ${playfair.variable} ${cormorant.variable}`}>
+        <ThemeProvider
+          attribute="class"
           defaultTheme="light"
           enableSystem={false}
           disableTransitionOnChange
         >
           <Header />
-          {children}
+          <main className="relative z-10 min-h-screen flex flex-col">
+            {children}
+          </main>
           <ScrollToTop />
         </ThemeProvider>
       </body>

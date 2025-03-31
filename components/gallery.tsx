@@ -1,57 +1,41 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-
-// Sample before/after projects
-const projects = [
-  {
-    id: 1,
-    title: "Urban Balcony Transformation",
-    description:
-      "A small city balcony transformed into a lush green retreat with container plants and vertical gardening.",
-    before: "/placeholder.svg?height=600&width=800",
-    after: "/placeholder.svg?height=600&width=800",
-  },
-  {
-    id: 2,
-    title: "Rooftop Terrace Garden",
-    description:
-      "A barren rooftop converted into an entertaining space with potted trees, built-in seating, and ambient lighting.",
-    before: "/placeholder.svg?height=600&width=800",
-    after: "/placeholder.svg?height=600&width=800",
-  },
-  {
-    id: 3,
-    title: "Minimalist Balcony Design",
-    description: "A cluttered balcony redesigned with clean lines, strategic plantings, and functional furniture.",
-    before: "/placeholder.svg?height=600&width=800",
-    after: "/placeholder.svg?height=600&width=800",
-  },
-  {
-    id: 4,
-    title: "Family-Friendly Terrace",
-    description:
-      "A terrace transformed to accommodate both adults and children with play areas and comfortable seating.",
-    before: "/placeholder.svg?height=600&width=800",
-    after: "/placeholder.svg?height=600&width=800",
-  },
-]
+import { ChevronRight, ChevronLeft } from "lucide-react"
 
 export default function Gallery() {
-  const [currentProject, setCurrentProject] = useState(0)
-  const [isBeforeAfterMode, setIsBeforeAfterMode] = useState(true)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const sectionRef = useRef<HTMLElement>(null)
   const galleryRef = useRef<HTMLDivElement>(null)
 
+  const projects = [
+    {
+      id: 1,
+      title: "Elegance in Simplicity",
+      description: "A minimalist approach that transformed a barren terrace into a serene retreat.",
+      before: "/projects/before-1.png",
+      after: "/projects/after-1.png",
+    },
+    {
+      id: 2,
+      title: "Urban Oasis",
+      description: "Creating a lush paradise amidst a concrete jungle for a city apartment.",
+      before: "/projects/before-2.png",
+      after: "/projects/after-2.png",
+    },
+  ]
+
   const nextProject = () => {
-    setCurrentProject((prev) => (prev + 1) % projects.length)
+    setCurrentIndex((prevIndex) => 
+      prevIndex === projects.length - 1 ? 0 : prevIndex + 1
+    )
   }
 
   const prevProject = () => {
-    setCurrentProject((prev) => (prev - 1 + projects.length) % projects.length)
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? projects.length - 1 : prevIndex - 1
+    )
   }
 
   useEffect(() => {
@@ -59,149 +43,126 @@ export default function Gallery() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fade-in-up")
+            entry.target.classList.add("animate-fade-in")
           }
         })
       },
-      { threshold: 0.1, rootMargin: "0px 0px -100px 0px" },
+      { threshold: 0.2 }
     )
 
     if (sectionRef.current) {
       observer.observe(sectionRef.current)
     }
 
-    if (galleryRef.current) {
-      observer.observe(galleryRef.current)
-    }
-
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current)
-      }
-
-      if (galleryRef.current) {
-        observer.unobserve(galleryRef.current)
-      }
+      observer.disconnect()
     }
   }, [])
 
   return (
-    <section id="gallery" ref={sectionRef} className="py-20 bg-gray-50 opacity-0 transition-all duration-1000">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-green-800 mb-4">Before & After Gallery</h2>
-          <div className="bg-green-50 border border-green-200 rounded-md p-4 mt-4 mb-8 text-center">
-            <p className="text-green-800">
-              <span className="font-bold">📸</span> Showcase images of completed projects here. Replace placeholder
-              images with your actual project photos.
-            </p>
-          </div>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            See the transformations we've created for our clients. Swipe through our projects to witness the dramatic
-            before and after changes.
+    <section 
+      id="gallery" 
+      ref={sectionRef}
+      className="py-12 bg-background relative opacity-0 overflow-hidden"
+    >
+      {/* Subtle decorative elements */}
+      <div className="absolute top-0 right-0 w-[30%] h-[30%] bg-primary/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-[30%] h-[30%] bg-accent/5 rounded-full blur-3xl"></div>
+      
+      {/* Subtle decorative lines */}
+      <div className="absolute bottom-0 left-0 w-40 h-[1px] bg-accent/20"></div>
+      <div className="absolute bottom-0 left-0 h-40 w-[1px] bg-accent/20"></div>
+      
+      <div className="container mx-auto">
+        <div className="max-w-3xl mx-auto text-center mb-24">
+          <span className="luxury-badge mb-8 inline-block animate-slide-in-left">OUR PORTFOLIO</span>
+          <h2 className="text-4xl md:text-5xl font-extralight tracking-tight text-foreground mb-8">
+            <span className="relative">
+              Transformations That <span className="text-accent font-light">Inspire</span>
+            </span>
+          </h2>
+          <div className="w-20 h-[1px] bg-accent mx-auto mb-10"></div>
+          <p className="text-lg text-foreground/70 max-w-2xl mx-auto font-light leading-relaxed">
+            Witness the artistry of our transformations as we reimagine outdoor spaces into breathtaking sanctuaries. Each project tells a unique story of vision, craft, and beauty.
           </p>
         </div>
 
-        <div ref={galleryRef} className="opacity-0 transition-all duration-1000 delay-300">
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="p-6 border-b">
-              <div className="flex justify-between items-center">
-                <h3 className="text-xl font-bold text-green-800">{projects[currentProject].title}</h3>
-                {/* <div className="flex gap-1">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsBeforeAfterMode(true)}
-                    className={isBeforeAfterMode ? "bg-green-50 border-green-600 text-green-600" : ""}
-                  >
-                    Before/After
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsBeforeAfterMode(false)}
-                    className={!isBeforeAfterMode ? "bg-green-50 border-green-600 text-green-600" : ""}
-                  >
-                    Side by Side
-                  </Button>
-                </div> */}
+        <div 
+          ref={galleryRef}
+          className="relative max-w-6xl mx-auto"
+        >
+          <div className="grid grid-cols-2 gap-2 md:gap-4 lg:gap-8 items-center">
+            {/* Before Image */}
+            <div className="relative overflow-hidden">
+              <div className="absolute top-2 left-2 z-10 bg-background/80 backdrop-blur-sm px-4 py-1 text-xs font-light tracking-widest">BEFORE</div>
+              <div className="luxury-image h-[250px] md:h-[400px] lg:h-[700px]">
+                <Image
+                  src={projects[currentIndex].before}
+                  alt={`Before - ${projects[currentIndex].title}`}
+                  width={600}
+                  height={450}
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <p className="text-gray-600 mt-2">{projects[currentProject].description}</p>
             </div>
 
-            {isBeforeAfterMode ? (
-              <div className="relative group">
-                <div className="relative h-[400px] md:h-[500px] w-full">
-                  <Image
-                    src={projects[currentProject].after || "/placeholder.svg"}
-                    alt={`After: ${projects[currentProject].title}`}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <p className="text-white text-2xl font-bold">After</p>
-                  </div>
-                </div>
-                <div className="relative h-[400px] md:h-[500px] w-full">
-                  <Image
-                    src={projects[currentProject].before || "/placeholder.svg"}
-                    alt={`Before: ${projects[currentProject].title}`}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <p className="text-white text-2xl font-bold">Before</p>
-                  </div>
-                </div>
+            {/* After Image */}
+            <div className="relative overflow-hidden">
+              <div className="absolute top-2 left-2 z-10 bg-accent/80 backdrop-blur-sm px-4 py-1 text-xs font-light tracking-widest text-accent-foreground">AFTER</div>
+              <div className="luxury-image h-[250px] md:h-[400px] lg:h-[700px]">
+                <Image
+                  src={projects[currentIndex].after}
+                  alt={`After - ${projects[currentIndex].title}`}
+                  width={600}
+                  height={450}
+                  className="w-full h-full object-cover"
+                />
               </div>
-            ) : (
-              <div className="grid md:grid-cols-2">
-                <div className="relative h-[400px] md:h-[500px]">
-                  <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-md z-10">Before</div>
-                  <Image
-                    src={projects[currentProject].before || "/placeholder.svg"}
-                    alt={`Before: ${projects[currentProject].title}`}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="relative h-[400px] md:h-[500px]">
-                  <div className="absolute top-4 left-4 bg-green-600/90 text-white px-3 py-1 rounded-md z-10">
-                    After
-                  </div>
-                  <Image
-                    src={projects[currentProject].after || "/placeholder.svg"}
-                    alt={`After: ${projects[currentProject].title}`}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-            )}
-
-            <div className="p-4 flex justify-between items-center">
-              <Button variant="outline" size="icon" onClick={prevProject} className="rounded-full">
-                <ChevronLeft className="h-5 w-5" />
-              </Button>
-              <div className="flex gap-1">
-                {projects.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentProject(index)}
-                    className={`h-2 rounded-full transition-all ${
-                      currentProject === index ? "w-6 bg-green-600" : "w-2 bg-gray-300"
-                    }`}
-                  />
-                ))}
-              </div>
-              <Button variant="outline" size="icon" onClick={nextProject} className="rounded-full">
-                <ChevronRight className="h-5 w-5" />
-              </Button>
             </div>
           </div>
+
+          {/* Project details */}
+          <div className="mt-12 text-center max-w-2xl mx-auto p-8 border border-accent/10 backdrop-blur-sm bg-background/50">
+            <h3 className="text-xl md:text-2xl font-light text-foreground mb-3">
+              {projects[currentIndex].title}
+            </h3>
+            <div className="w-12 h-[1px] bg-accent mx-auto mb-6"></div>
+            <p className="text-foreground/70 font-light mb-6">
+              {projects[currentIndex].description}
+            </p>
+            
+            {/* Pagination */}
+            <div className="flex items-center justify-center gap-2">
+              {projects.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    currentIndex === index ? "bg-accent w-6" : "bg-foreground/20"
+                  }`}
+                  aria-label={`View project ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation buttons - visible on all screen sizes */}
+          <button
+            onClick={prevProject}
+            className="absolute top-1/2 -translate-y-1/2 left-2 md:-left-8 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-background/70 border border-accent/10 backdrop-blur-sm rounded-full text-foreground/80 hover:text-accent transition-all hover:bg-background z-20"
+            aria-label="Previous project"
+          >
+            <ChevronLeft className="h-5 w-5 md:h-7 md:w-7" />
+          </button>
+          <button
+            onClick={nextProject}
+            className="absolute top-1/2 -translate-y-1/2 right-2 md:-right-8 w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-background/70 border border-accent/10 backdrop-blur-sm rounded-full text-foreground/80 hover:text-accent transition-all hover:bg-background z-20"
+            aria-label="Next project"
+          >
+            <ChevronRight className="h-5 w-5 md:h-7 md:w-7" />
+          </button>
         </div>
       </div>
     </section>
   )
 }
-
