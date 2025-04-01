@@ -93,7 +93,7 @@ export default function Testimonials() {
   }, [])
 
   return (
-    <section id="testimonials" ref={sectionRef} className="py-20 bg-white opacity-0 transition-all duration-1000">
+    <section id="testimonials" ref={sectionRef} className="py-20 bg-white opacity-0 transition-all duration-500">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-green-800 mb-4">What Our Clients Say</h2>

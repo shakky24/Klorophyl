@@ -530,7 +530,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" ref={sectionRef} className="py-20 bg-green-50 opacity-0 transition-all duration-1000">
+    <section id="contact" ref={sectionRef} className="py-20 bg-green-50 opacity-0 transition-all duration-500">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-green-800 mb-4">

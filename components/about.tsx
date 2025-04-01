@@ -46,7 +46,7 @@ export default function About() {
     <section 
       id="about" 
       ref={sectionRef} 
-      className="py-32 bg-background relative opacity-0 transition-all duration-1000 overflow-hidden"
+      className="py-32 bg-background relative opacity-0 transition-all duration-500 overflow-hidden"
     >
       {/* Subtle decorative elements */}
       <div className="absolute left-0 bottom-0 w-60 h-60 bg-primary/5 rounded-full blur-3xl"></div>
@@ -76,12 +76,12 @@ export default function About() {
             ref={(el) => {
               if (el) itemsRef.current[0] = el;
             }} 
-            className="opacity-0 transition-all duration-1000 delay-300 relative"
+            className="opacity-0 transition-all duration-500 delay-300 relative"
           >
             <div className="absolute -top-6 -left-6 w-24 h-24 border border-accent/20"></div>
             <div className="luxury-image">
               <Image
-                src="/about-us.png"
+                src="/fin_klo_greenbg_logo_squareformat_withtagline.png"
                 alt="Klorophyl landscape design"
                 width={800}
                 height={600}
@@ -97,7 +97,7 @@ export default function About() {
               ref={(el) => {
                 if (el) itemsRef.current[1] = el;
               }}
-              className="mb-16 opacity-0 transition-all duration-1000 delay-500"
+              className="mb-16 opacity-0 transition-all duration-500 delay-500"
             >
               <h3 className="text-xl font-light text-foreground mb-8 relative">
                   Why Choose Klorophyl?
@@ -143,7 +143,7 @@ export default function About() {
               ref={(el) => {
                 if (el) itemsRef.current[2] = el;
               }}
-              className="grid grid-cols-2 gap-8 opacity-0 transition-all duration-1000 delay-700"
+              className="grid grid-cols-2 gap-8 opacity-0 transition-all duration-500 delay-700"
             >
               {[
                 { 

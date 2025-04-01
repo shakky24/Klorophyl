@@ -43,7 +43,7 @@ export function ImageGallery() {
     <section 
       id="image-gallery" 
       ref={sectionRef} 
-      className="p-2 opacity-0 transition-all duration-1000"
+      className="p-2 opacity-0 transition-all duration-500"
     >
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
