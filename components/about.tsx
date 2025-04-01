@@ -81,7 +81,7 @@ export default function About() {
             <div className="absolute -top-6 -left-6 w-24 h-24 border border-accent/20"></div>
             <div className="luxury-image">
               <Image
-                src="/fin_klo_greenbg_logo_squareformat_withtagline.png"
+                src="/aboutus.jpeg"
                 alt="Klorophyl landscape design"
                 width={800}
                 height={600}
