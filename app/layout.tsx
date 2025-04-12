@@ -37,11 +37,22 @@ export default function RootLayout({
   return (
     <html lang="en" className={`scroll-smooth ${playfair.variable} ${cormorant.variable}`} suppressHydrationWarning>
       <head>
-        {/* Google Analytics script can be added here later */}
-        {/* 
+        {/* Google Tag Manager */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-KZRGM7J7');
+            `
+          }}
+        />
+        {/* Google Analytics */}
         <script
           async
-          src={`https://www.googletagmanager.com/gtag/js?id=YOUR_MEASUREMENT_ID`}
+          src="https://www.googletagmanager.com/gtag/js?id=AW-16981061425"
         />
         <script
           dangerouslySetInnerHTML={{
@@ -49,13 +60,21 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'YOUR_MEASUREMENT_ID');
-            `,
+              gtag('config', 'AW-16981061425');
+            `
           }}
         />
-        */}
       </head>
       <body className={`font-outfit ${playfair.variable} ${cormorant.variable}`}>
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-KZRGM7J7"
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"
+          />
+        </noscript>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
