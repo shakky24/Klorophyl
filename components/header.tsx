@@ -12,6 +12,8 @@ export default function Header() {
   // /forms has a light background all the way to the top (no dark hero),
   // so the header needs its solid styling from the start, not just on scroll.
   const forceSolid = pathname === "/forms"
+  // /crm has its own login card / dashboard chrome — the marketing nav doesn't apply there.
+  const isCrmRoute = pathname?.startsWith("/crm") ?? false
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
@@ -38,6 +40,8 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [lastScrollY])
+
+  if (isCrmRoute) return null
 
   return (
     <header
