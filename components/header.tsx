@@ -3,10 +3,15 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 export default function Header() {
+  const pathname = usePathname()
+  // /forms has a light background all the way to the top (no dark hero),
+  // so the header needs its solid styling from the start, not just on scroll.
+  const forceSolid = pathname === "/forms"
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
@@ -38,7 +43,7 @@ export default function Header() {
     <header
       className={cn(
         "fixed bg-white/10 backdrop-blur-sm top-0 left-0 right-0 z-50 transition-all duration-300 py-2",
-        isScrolled ? "bg-white/90 backdrop-blur-sm shadow-sm" : "bg-transparent",
+        isScrolled || forceSolid ? "bg-white/90 backdrop-blur-sm shadow-sm" : "bg-transparent",
         isVisible ? "translate-y-0" : "-translate-y-full"
       )}
     >
@@ -53,7 +58,7 @@ export default function Header() {
           />
           <span className={cn(
             "font-bold text-2xl",
-            isScrolled ? "text-green-800" : "text-white"
+            isScrolled || forceSolid ? "text-green-800" : "text-white"
           )}>Klorophyl</span>
         </Link>
 
@@ -61,25 +66,25 @@ export default function Header() {
         <nav className="hidden md:flex items-center gap-8">
           <Link href="#about" className={cn(
             "transition-colors",
-            isScrolled ? "text-gray-700 hover:text-green-600" : "text-white hover:text-green-200"
+            isScrolled || forceSolid ? "text-gray-700 hover:text-green-600" : "text-white hover:text-green-200"
           )}>
             About
           </Link>
           <Link href="#services" className={cn(
             "transition-colors",
-            isScrolled ? "text-gray-700 hover:text-green-600" : "text-white hover:text-green-200"
+            isScrolled || forceSolid ? "text-gray-700 hover:text-green-600" : "text-white hover:text-green-200"
           )}>
             Services
           </Link>
           <Link href="#gallery" className={cn(
             "transition-colors",
-            isScrolled ? "text-gray-700 hover:text-green-600" : "text-white hover:text-green-200"
+            isScrolled || forceSolid ? "text-gray-700 hover:text-green-600" : "text-white hover:text-green-200"
           )}>
             Gallery
           </Link>
           <Link href="#testimonials" className={cn(
             "transition-colors",
-            isScrolled ? "text-gray-700 hover:text-green-600" : "text-white hover:text-green-200"
+            isScrolled || forceSolid ? "text-gray-700 hover:text-green-600" : "text-white hover:text-green-200"
           )}>
             Testimonials
           </Link>
