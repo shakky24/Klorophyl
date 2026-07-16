@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="bg-green-800 text-white">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Image 
@@ -16,7 +16,7 @@ export default function Footer() {
                 height={50} 
                 className="rounded-md"
               />
-              <span className="font-bold text-2xl">Klorophyl</span>
+              <span className="font-playfair font-bold text-2xl">Klorophyl</span>
             </div>
             <p className="text-green-100 mb-6">
               Crafting breathtaking green spaces for every home & business since 2013.
@@ -56,44 +56,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#testimonials" className="text-green-100 hover:text-white transition-colors">
-                  Testimonials
-                </Link>
-              </li>
-              <li>
                 <Link href="#contact" className="text-green-100 hover:text-white transition-colors">
                   Contact Us
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-bold text-lg mb-4">Services</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="#" className="text-green-100 hover:text-white transition-colors">
-                  Plant Selection
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-green-100 hover:text-white transition-colors">
-                  Container Gardening
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-green-100 hover:text-white transition-colors">
-                  Irrigation Systems
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-green-100 hover:text-white transition-colors">
-                  Custom Design
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-green-100 hover:text-white transition-colors">
-                  Maintenance Plans
                 </Link>
               </li>
             </ul>
@@ -115,7 +79,13 @@ export default function Footer() {
               <li className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-green-300 shrink-0" />
                 <Link href="tel:+919886052525" className="text-green-100 hover:text-white transition-colors">
-                  +91 98860 52525
+                  +91 9886052525
+                </Link>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone className="h-5 w-5 text-green-300 shrink-0" />
+                <Link href="tel:+917975448429" className="text-green-100 hover:text-white transition-colors">
+                  +91 7975448429
                 </Link>
               </li>
               <li className="flex items-center gap-3">

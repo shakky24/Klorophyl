@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 export default function Header() {
@@ -12,12 +11,10 @@ export default function Header() {
   // /forms has a light background all the way to the top (no dark hero),
   // so the header needs its solid styling from the start, not just on scroll.
   const forceSolid = pathname === "/forms"
-  // /crm has its own login card / dashboard chrome — the marketing nav doesn't apply there.
-  const isCrmRoute = pathname?.startsWith("/crm") ?? false
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,64 +38,75 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [lastScrollY])
 
-  if (isCrmRoute) return null
-
   return (
     <header
       className={cn(
-        "fixed bg-white/10 backdrop-blur-sm top-0 left-0 right-0 z-50 transition-all duration-300 py-2",
-        isScrolled || forceSolid ? "bg-white/90 backdrop-blur-sm shadow-sm" : "bg-transparent",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+        isScrolled || forceSolid
+          ? "bg-white/95 backdrop-blur-md border-b border-border py-3 shadow-sm"
+          : "bg-transparent py-5",
         isVisible ? "translate-y-0" : "-translate-y-full"
       )}
     >
-      <div className="container mx-auto px-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <Image 
-            src="/fin_klo_greenbg_symbol.png" 
-            alt="Klorophyl Logo" 
-            width={40} 
-            height={40} 
-            className="rounded-md"
-          />
+      <div className="container mx-auto flex items-center justify-between">
+        <Link href="/" className="flex items-center space-x-1 group">
+          <div className="relative h-10 overflow-hidden transition-transform duration-500 group-hover:scale-105">
+            <Image 
+              src="/fin_klo_greenbg_symbol.png" 
+              alt="Klorophyl Logo" 
+              width={30} 
+              height={60} 
+              className="object-cover"
+            />
+          </div>
           <span className={cn(
-            "font-bold text-2xl",
-            isScrolled || forceSolid ? "text-green-800" : "text-white"
-          )}>Klorophyl</span>
+            "text-xl font-playfair font-light tracking-wider transition-colors duration-300",
+            isScrolled || forceSolid ? "text-foreground" : "text-white"
+          )}>
+            Klorophyl
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
-          <Link href="#about" className={cn(
-            "transition-colors",
-            isScrolled || forceSolid ? "text-gray-700 hover:text-green-600" : "text-white hover:text-green-200"
-          )}>
-            About
+        <nav className="hidden md:flex items-center space-x-8">
+          {[
+            { name: 'About', href: '#about' },
+            { name: 'Services', href: '#services' },
+            { name: 'Gallery', href: '#gallery' },
+          ].map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={cn(
+                "text-sm uppercase tracking-wider font-cormorant transition-colors hover:text-accent",
+                isScrolled || forceSolid ? "text-foreground" : "text-white"
+              )}
+            >
+              {item.name}
+            </Link>
+          ))}
+          <Link
+            href="#contact"
+            className={cn(
+              "premium-button text-xs",
+              isScrolled || forceSolid
+                ? "border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+                : "border-white text-white hover:border-accent"
+            )}
+          >
+            Get in Touch
           </Link>
-          <Link href="#services" className={cn(
-            "transition-colors",
-            isScrolled || forceSolid ? "text-gray-700 hover:text-green-600" : "text-white hover:text-green-200"
-          )}>
-            Services
-          </Link>
-          <Link href="#gallery" className={cn(
-            "transition-colors",
-            isScrolled || forceSolid ? "text-gray-700 hover:text-green-600" : "text-white hover:text-green-200"
-          )}>
-            Gallery
-          </Link>
-          <Link href="#testimonials" className={cn(
-            "transition-colors",
-            isScrolled || forceSolid ? "text-gray-700 hover:text-green-600" : "text-white hover:text-green-200"
-          )}>
-            Testimonials
-          </Link>
-          <Button asChild className="bg-green-600 hover:bg-green-700">
-            <Link href="#contact">Get a Quote</Link>
-          </Button>
         </nav>
 
-        {/* Mobile Menu Button */}
-        <button className="md:hidden text-gray-700" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+        {/* Mobile Menu Toggle */}
+        <button 
+          className={cn(
+            "md:hidden p-2 transition-colors",
+            isScrolled || forceSolid ? "text-foreground" : "text-white"
+          )}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle mobile menu"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -107,9 +115,9 @@ export default function Header() {
             className="w-6 h-6"
           >
             {isMobileMenuOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
             ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
             )}
           </svg>
         </button>
@@ -117,42 +125,115 @@ export default function Header() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white shadow-lg absolute top-full left-0 right-0 py-4 px-4 flex flex-col gap-4 animate-in slide-in-from-top duration-300">
-          <Link
-            href="#about"
-            className="text-gray-700 hover:text-green-600 transition-colors py-2 border-b border-gray-100"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            About
-          </Link>
-          <Link
-            href="#services"
-            className="text-gray-700 hover:text-green-600 transition-colors py-2 border-b border-gray-100"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Services
-          </Link>
-          <Link
-            href="#gallery"
-            className="text-gray-700 hover:text-green-600 transition-colors py-2 border-b border-gray-100"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Gallery
-          </Link>
-          <Link
-            href="#testimonials"
-            className="text-gray-700 hover:text-green-600 transition-colors py-2 border-b border-gray-100"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Testimonials
-          </Link>
-          <Button
-            asChild
-            className="bg-green-600 hover:bg-green-700 w-full mt-2"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <Link href="#contact">Get a Quote</Link>
-          </Button>
+        <div className="md:hidden fixed inset-0 z-[100] flex">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)}></div>
+          <div className="relative w-full ml-auto h-full bg-[#ffffff] shadow-xl flex flex-col">
+            <div className="p-6 flex justify-between items-center border-b border-gray-100">
+              <span className="font-playfair font-medium uppercase tracking-wider text-sm text-gray-900">Menu</span>
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="p-2 text-gray-600 hover:text-accent transition-colors"
+                aria-label="Close menu"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <nav className="py-8 px-8 flex flex-col space-y-6 bg-white">
+              <Link
+                href="#about"
+                className="text-gray-800 hover:text-accent transition-colors py-2 uppercase tracking-wider text-sm font-cormorant font-medium"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsMobileMenuOpen(false);
+                  const targetElement = document.getElementById("about");
+                  if (targetElement) {
+                    const headerOffset = 80;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                    });
+                  }
+                }}
+              >
+                About
+              </Link>
+              
+              <Link
+                href="#services"
+                className="text-gray-800 hover:text-accent transition-colors py-2 uppercase tracking-wider text-sm font-cormorant font-medium"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsMobileMenuOpen(false);
+                  const targetElement = document.getElementById("services");
+                  if (targetElement) {
+                    const headerOffset = 80;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                    });
+                  }
+                }}
+              >
+                Services
+              </Link>
+              
+              <Link
+                href="#gallery"
+                className="text-gray-800 hover:text-accent transition-colors py-2 uppercase tracking-wider text-sm font-cormorant font-medium"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsMobileMenuOpen(false);
+                  const targetElement = document.getElementById("gallery");
+                  if (targetElement) {
+                    const headerOffset = 80;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                    });
+                  }
+                }}
+              >
+                Gallery
+              </Link>
+              
+              <div className="my-4 h-px bg-gray-200"></div>
+              
+              <Link
+                href="#contact" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsMobileMenuOpen(false);
+                  const targetElement = document.getElementById("contact");
+                  if (targetElement) {
+                    const headerOffset = 80;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                      top: offsetPosition,
+                      behavior: 'smooth'
+                    });
+                  }
+                }}
+                className="premium-button border-accent text-accent hover:bg-accent hover:text-accent-foreground text-center font-playfair"
+              >
+                Get in Touch
+              </Link>
+            </nav>
+          </div>
         </div>
       )}
     </header>
