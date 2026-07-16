@@ -3,9 +3,16 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
 export default function Header() {
+  const pathname = usePathname()
+  // /forms has a light background all the way to the top (no dark hero),
+  // so the header needs its solid styling from the start, not just on scroll.
+  const forceSolid = pathname === "/forms"
+  // /crm has its own login card / dashboard chrome — the marketing nav doesn't apply there.
+  const isCrmRoute = pathname?.startsWith("/crm") ?? false
   const [isScrolled, setIsScrolled] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
@@ -33,12 +40,14 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [lastScrollY])
 
+  if (isCrmRoute) return null
+
   return (
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        isScrolled 
-          ? "bg-white/95 backdrop-blur-md border-b border-border py-3 shadow-sm" 
+        isScrolled || forceSolid
+          ? "bg-white/95 backdrop-blur-md border-b border-border py-3 shadow-sm"
           : "bg-transparent py-5",
         isVisible ? "translate-y-0" : "-translate-y-full"
       )}
@@ -56,7 +65,7 @@ export default function Header() {
           </div>
           <span className={cn(
             "text-xl font-playfair font-light tracking-wider transition-colors duration-300",
-            isScrolled ? "text-foreground" : "text-white"
+            isScrolled || forceSolid ? "text-foreground" : "text-white"
           )}>
             Klorophyl
           </span>
@@ -69,12 +78,12 @@ export default function Header() {
             { name: 'Services', href: '#services' },
             { name: 'Gallery', href: '#gallery' },
           ].map((item) => (
-            <Link 
+            <Link
               key={item.name}
-              href={item.href} 
+              href={item.href}
               className={cn(
                 "text-sm uppercase tracking-wider font-cormorant transition-colors hover:text-accent",
-                isScrolled ? "text-foreground" : "text-white"
+                isScrolled || forceSolid ? "text-foreground" : "text-white"
               )}
             >
               {item.name}
@@ -84,8 +93,8 @@ export default function Header() {
             href="#contact"
             className={cn(
               "premium-button text-xs",
-              isScrolled 
-                ? "border-accent text-accent hover:bg-accent hover:text-accent-foreground" 
+              isScrolled || forceSolid
+                ? "border-accent text-accent hover:bg-accent hover:text-accent-foreground"
                 : "border-white text-white hover:border-accent"
             )}
           >
@@ -97,7 +106,7 @@ export default function Header() {
         <button 
           className={cn(
             "md:hidden p-2 transition-colors",
-            isScrolled ? "text-foreground" : "text-white"
+            isScrolled || forceSolid ? "text-foreground" : "text-white"
           )}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle mobile menu"
