@@ -36,5 +36,36 @@ export async function submitLead(
     return { status: "error", message: "Something went wrong, please try again or call us." }
   }
 
+  await appendToGoogleSheet(values)
+
   return { status: "success" }
+}
+
+async function appendToGoogleSheet(values: Record<FieldName, string>) {
+  const url = process.env.GOOGLE_SHEETS_WEBHOOK_URL
+  const secret = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET
+
+  if (!url || !secret) return
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        secret,
+        name: values.name.trim(),
+        area: values.area.trim(),
+        phone: values.phone.trim(),
+      }),
+      redirect: "follow",
+    })
+
+    if (!response.ok) {
+      console.error("Google Sheets webhook returned", response.status, await response.text())
+    }
+  } catch (err) {
+    // The lead is already saved in Supabase, so a sheet-write failure
+    // shouldn't fail the user's submission — just log it for follow-up.
+    console.error("Failed to append lead to Google Sheet:", err)
+  }
 }
